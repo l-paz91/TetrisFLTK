@@ -43,11 +43,11 @@ namespace FltkWrapper
 		Image(Point pXY, int pWidth, int pHeight, std::string pFilename, Suffix::Encoding pEncoding = Suffix::eNONE);
 		~Image() { delete mImage; }
 
-		virtual void draw();
+		virtual void draw() override;
 
 		void render();
 		void setMask(Point pXY, int pWidth, int pHeight);
-		void changePoint(double x, double y);
+		void drawPoint(double x, double y);
 
 		const double getWidth() const { return mImage->w(); }
 		const double getHeight() const { return mImage->h(); }

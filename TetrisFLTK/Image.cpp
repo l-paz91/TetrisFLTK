@@ -139,10 +139,9 @@ void FltkWrapper::Image::setMask(Point pXY, int pWidth, int pHeight)
 
 // -----------------------------------------------------------------------------
 
-void FltkWrapper::Image::changePoint(double x, double y)
+void FltkWrapper::Image::drawPoint(double pX, double pY)
 {
-	mPoint.mX = x;
-	mPoint.mY = y;
+	mImage->draw(int(pX), int(pY));
 }
 
 // -----------------------------------------------------------------------------

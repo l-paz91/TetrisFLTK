@@ -17,7 +17,7 @@ int main()
 {
 	using namespace FltkWrapper;
 
-	TetrisWindow tetrisWindow(Point(0, 0), 500, 500, "Tetris Window");
+	TetrisWindow tetrisWindow(Point(0, 0), 500, 600, "Tetris Window");
 
 	return Fl::run();
 }
