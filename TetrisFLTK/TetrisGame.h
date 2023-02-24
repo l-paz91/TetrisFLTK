@@ -14,6 +14,7 @@
 
 //--INCLUDES--//
 #include "Image.h"
+#include "InputOptions.h"
 #include "Shape.h"
 
 #include <vector>
@@ -33,19 +34,44 @@ namespace FltkWrapper
 		~TetrisGame();
 
 		virtual void draw() override;
+		void incrementGameTickCounter() { ++mGameTickCounter; }
 
 	private:
 		void setupTetrisBoard();
+		int getTetrominoBlockIndexAfterRotation(int pX, int pY, int pR);
+		bool doesPieceFit(int pTetromino, int pRotation, int pPosX, int pPosY);
 
 		void update();
 		void render();
 
-		Fl_Image* mGreyBlock2;
+		Fl_Image* mGreyBlock;
+		Fl_Image* mCyanBlock;
+		Fl_Image* mGreenBlock;
+		Fl_Image* mNavyBlock;
+		Fl_Image* mOrangeBlock;
+		Fl_Image* mPurpleBlock;
+		Fl_Image* mRedBlock;
+		Fl_Image* mYellowBlock;
 
+		InputOptions mTetrisInputOptions;
 		vector<char> mTetrisBoard;
 		vector<wstring> mTetrominos;
 		vector<int> mLines;
 		vector<char> mAssets;
+
+		int mGameTickCounter;
+		int mNumTetrominosOnBoard;
+		int mScore;
+
+		int mCurrentTetromino;
+		int mCurrentRotation;
+		int mCurrentX;
+		int mCurrentY;
+		int mPieceCount;
+
+		int mTetrominoFallSpeed;
+		bool mForceTetrominoDown;
+		bool mLockRotate;
 	};
 }
 

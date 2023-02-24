@@ -16,13 +16,14 @@ FltkWrapper::TetrisWindow::TetrisWindow(Point pXY, int pWidth, int pHeight, cons
 	attach(mTetrisGame);
 
 	// register tick function
-	//Fl::add_timeout(0.05, cb_tick, (void*)this);
+	Fl::add_timeout(0.05, cb_tick, (void*)this);
 }
 
 // -----------------------------------------------------------------------------
 
 void FltkWrapper::TetrisWindow::tick()
 {
+	mTetrisGame.incrementGameTickCounter();
 	redraw();
 }
 
