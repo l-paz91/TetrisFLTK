@@ -48,6 +48,11 @@ namespace FltkWrapper
 			eVISIBLE = 255 
 		};
 
+		Colour()
+			: mColour(eBLACK)
+			, mTransparency(eVISIBLE)
+		{}
+
 		Colour(ColourType pColourType) 
 			: mColour(Fl_Color(pColourType))
 			, mTransparency(eVISIBLE)

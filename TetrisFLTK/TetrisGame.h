@@ -16,6 +16,7 @@
 #include "Image.h"
 #include "InputOptions.h"
 #include "Shape.h"
+#include "Text.h"
 
 #include <vector>
 #include <string>
@@ -52,6 +53,8 @@ namespace FltkWrapper
 		Fl_Image* mPurpleBlock;
 		Fl_Image* mRedBlock;
 		Fl_Image* mYellowBlock;
+
+		Text mScoreText;
 
 		InputOptions mTetrisInputOptions;
 		vector<char> mTetrisBoard;

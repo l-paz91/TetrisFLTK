@@ -16,7 +16,9 @@
 // -----------------------------------------------------------------------------
 
 //--INCLUDES--//
+#include "Point.h"
 
+#include <vector>
 
 // -----------------------------------------------------------------------------
 
@@ -27,6 +29,13 @@ namespace FltkWrapper
 	public:
 		virtual void draw() = 0;
 		~Shape() {}
+
+	protected:
+		void addPoint(Point pPoint) { mPoints.push_back(pPoint); }
+		const Point atPoint(int pIndex) const { return mPoints[pIndex]; }
+
+	private:
+		std::vector<Point> mPoints;	// not used by all shapes
 	};
 }
 

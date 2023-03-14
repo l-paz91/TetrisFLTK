@@ -4,6 +4,7 @@
 #include "TetrisGame.h"
 
 #include <thread>
+#include <sstream>
 
 // -----------------------------------------------------------------------------
 
@@ -16,13 +17,16 @@ namespace
 		constexpr int tetrominoFallSpeed = 20;
 		constexpr int screenWidth = 120;
 		constexpr int screenHeight = 30;
+
+		constexpr int screenMult = 26;
 	}
 }
 
 // -----------------------------------------------------------------------------
 
 FltkWrapper::TetrisGame::TetrisGame()
-	: mTetrisInputOptions(VK_LEFT, VK_RIGHT, VK_DOWN, VK_UP, VK_ESCAPE, VK_SPACE)
+	: mScoreText(Point(400, 200), "Score: ")
+	, mTetrisInputOptions(VK_LEFT, VK_RIGHT, VK_DOWN, VK_UP, VK_ESCAPE, VK_SPACE)
 	, mTetrisBoard(TetrisGamePrivate::tetrisGridWidth* TetrisGamePrivate::tetrisGridHeight)
 	, mTetrominos(7)
 	, mLines()
@@ -67,6 +71,13 @@ FltkWrapper::TetrisGame::TetrisGame()
 FltkWrapper::TetrisGame::~TetrisGame()
 {
 	delete mGreyBlock;
+	delete mCyanBlock;
+	delete mGreenBlock;
+	delete mNavyBlock;
+	delete mOrangeBlock;
+	delete mPurpleBlock;
+	delete mRedBlock;
+	delete mYellowBlock;
 }
 
 // -----------------------------------------------------------------------------
@@ -184,6 +195,9 @@ void FltkWrapper::TetrisGame::update()
 			}
 
 			mScore += 25;
+			std::stringstream newScore;
+			newScore << "Score: " << mScore;
+			mScoreText.setLabel(newScore.str());
 
 			// choose next piece
 			mCurrentX = tetrisGridWidth / 2;
@@ -194,7 +208,11 @@ void FltkWrapper::TetrisGame::update()
 
 			// if piece does not fit
 			mGameTickCounter = 0;
-			bool b =  !doesPieceFit(mCurrentTetromino, mCurrentRotation, mCurrentX, mCurrentY);
+			bool b = doesPieceFit(mCurrentTetromino, mCurrentRotation, mCurrentX, mCurrentY);
+			if (!b)
+			{
+				return;
+			}
 		}
 
 		mGameTickCounter = 0;
@@ -208,43 +226,46 @@ void FltkWrapper::TetrisGame::update()
 void FltkWrapper::TetrisGame::render()
 {
 	using namespace TetrisGamePrivate;
-
+	
 	// ---- draw game grid
 	for (int x = 0; x < tetrisGridWidth; ++x)
 	{
+		int xCoord = x * screenMult;
+
 		for (int y = 0; y < tetrisGridHeight; ++y)
 		{
-			if (mAssets[mTetrisBoard[y * tetrisGridWidth + x]] == '#')
+			int yCoord = y * screenMult;
+
+			char index = mAssets[mTetrisBoard[y * tetrisGridWidth + x]];
+
+			switch (index)
 			{
-				mGreyBlock->draw(x*26, y*26);
-			}
-			else if (mAssets[mTetrisBoard[y * tetrisGridWidth + x]] == 'A')
-			{
-				mCyanBlock->draw(x * 26, y * 26);
-			}
-			else if (mAssets[mTetrisBoard[y * tetrisGridWidth + x]] == 'B')
-			{
-				mPurpleBlock->draw(x * 26, y * 26);
-			}
-			else if (mAssets[mTetrisBoard[y * tetrisGridWidth + x]] == 'C')
-			{
-				mYellowBlock->draw(x * 26, y * 26);
-			}
-			else if (mAssets[mTetrisBoard[y * tetrisGridWidth + x]] == 'D')
-			{
-				mGreenBlock->draw(x * 26, y * 26);
-			}
-			else if (mAssets[mTetrisBoard[y * tetrisGridWidth + x]] == 'E')
-			{
-				mRedBlock->draw(x * 26, y * 26);
-			}
-			else if (mAssets[mTetrisBoard[y * tetrisGridWidth + x]] == 'F')
-			{
-				mOrangeBlock->draw(x * 26, y * 26);
-			}
-			else if (mAssets[mTetrisBoard[y * tetrisGridWidth + x]] == 'G')
-			{
-				mNavyBlock->draw(x * 26, y * 26);
+			case '#':
+				mGreyBlock->draw(xCoord, yCoord);
+				break;
+			case 'A':
+				mCyanBlock->draw(xCoord, yCoord);
+				break;
+			case 'B':
+				mPurpleBlock->draw(xCoord, yCoord);
+				break;
+			case 'C':
+				mYellowBlock->draw(xCoord, yCoord);
+				break;
+			case 'D':
+				mGreenBlock->draw(xCoord, yCoord);
+				break;
+			case 'E':
+				mRedBlock->draw(xCoord, yCoord);
+				break;
+			case 'F':
+				mOrangeBlock->draw(xCoord, yCoord);
+				break;
+			case 'G':
+				mNavyBlock->draw(xCoord, yCoord);
+				break;
+			default:
+				break;
 			}
 		}
 	}
@@ -254,44 +275,49 @@ void FltkWrapper::TetrisGame::render()
 	{
 		for (int y = 0; y < 4; ++y)
 		{
-			if (mTetrominos[mCurrentTetromino][getTetrominoBlockIndexAfterRotation(x, y, mCurrentRotation)] == L'X')
+			wchar_t currentT = mTetrominos[mCurrentTetromino][getTetrominoBlockIndexAfterRotation(x, y, mCurrentRotation)];
+			if (currentT == L'X')
 			{
-				int x1 = mCurrentX + x;
-				int y1 = mCurrentY + y;
-				if (mCurrentTetromino + 65 == 'A')
+				int xCoord = (mCurrentX + x) * screenMult;
+				int yCoord = (mCurrentY + y) * screenMult;
+
+				char index = mCurrentTetromino + 65;
+
+				switch (index)
 				{
-					mCyanBlock->draw(x1 * 26, y1 * 26);
-				}
-				else if (mCurrentTetromino + 65 == 'B')
-				{
-					mPurpleBlock->draw(x1 * 26, y1 * 26);
-				}
-				else if (mCurrentTetromino + 65 == 'C')
-				{
-					mYellowBlock->draw(x1 * 26, y1 * 26);
-				}
-				else if (mCurrentTetromino + 65 == 'D')
-				{
-					mGreenBlock->draw(x1 * 26, y1 * 26);
-				}
-				else if (mCurrentTetromino + 65 == 'E')
-				{
-					mRedBlock->draw(x1 * 26, y1 * 26);
-				}
-				else if (mCurrentTetromino + 65 == 'F')
-				{
-					mOrangeBlock->draw(x1 * 26, y1 * 26);
-				}
-				else if (mCurrentTetromino + 65 == 'G')
-				{
-					mNavyBlock->draw(x1 * 26, y1 * 26);
+				case '#':
+					mGreyBlock->draw(xCoord, yCoord);
+					break;
+				case 'A':
+					mCyanBlock->draw(xCoord, yCoord);
+					break;
+				case 'B':
+					mPurpleBlock->draw(xCoord, yCoord);
+					break;
+				case 'C':
+					mYellowBlock->draw(xCoord, yCoord);
+					break;
+				case 'D':
+					mGreenBlock->draw(xCoord, yCoord);
+					break;
+				case 'E':
+					mRedBlock->draw(xCoord, yCoord);
+					break;
+				case 'F':
+					mOrangeBlock->draw(xCoord, yCoord);
+					break;
+				case 'G':
+					mNavyBlock->draw(xCoord, yCoord);
+					break;
+				default:
+					break;
 				}
 			}
 		}
 	}
 
 	// ---- draw score
-	//swprintf_s(&pWindow.mWindow[2 * screenWidth + tetrisGridWidth + 6], 16, L"SCORE: %8d", mScore);
+	mScoreText.draw();
 
 	// ---- remove line if complete
 	if (!mLines.empty())

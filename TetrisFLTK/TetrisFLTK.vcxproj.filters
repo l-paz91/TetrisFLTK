@@ -74,5 +74,11 @@
     <ClInclude Include="InputOptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header Files\FltkWrapperFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Header Files\FltkWrapperFiles</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -46,7 +46,7 @@ void FltkWrapper::TetrisWindow::quitPressed()
 void FltkWrapper::TetrisWindow::cb_tick(Address pAddr)
 {
 	static_cast<TetrisWindow*>(pAddr)->tick();
-	Fl::repeat_timeout(0.05, cb_tick, (void*)pAddr);
+	Fl::repeat_timeout(0.08, cb_tick, (void*)pAddr);
 }
 
 // -----------------------------------------------------------------------------
